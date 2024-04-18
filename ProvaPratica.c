@@ -26,29 +26,6 @@ typedef struct{
 	No *topo;	
 }Lista;
 
-
-void imprimirLista(Lista *lista){
-	printf("\nLista: ");
-	printf("\n");
-	No *aux;
-	aux = lista->topo;
-	int i;
-	if(aux != NULL){
-		while(aux->proximo){
-			printf("Valor: ");
-			for(i = 0; i < 3; i++){
-				printf("%c ", aux->motivo[i]);
-			}
-			aux = aux->proximo;	
-		}
-		printf("Valor: ");
-		for(i = 0; i < 3; i++){
-			printf("%c", aux->motivo[i]);
-		}
-		printf("\n");
-	}		
-}
-
 void adicionarNaLista(Lista *lista, char motivo[3]){
 	No *novo = (No*) malloc (sizeof(No));
 	int i;
@@ -66,21 +43,6 @@ void adicionarNaLista(Lista *lista, char motivo[3]){
 	}	
 }
 
-void imprimirFila(Fila *fila){
-	printf("\nFila: ");
-	printf("\n");
-	NoF *aux = fila->topo;
-	
-	while(aux->proximo){
-		printf("Valor: ");
-		printf("%d", aux->posicao);
-		aux = aux->proximo;
-		printf("\n");
-	}
-	printf("Valor: ");
-	printf("%d\n", aux->posicao);
-}
-
 void enfileirar(Fila *fila, int posicao){
 	NoF *novo = (NoF*) malloc(sizeof(NoF));
 
@@ -94,28 +56,6 @@ void enfileirar(Fila *fila, int posicao){
 		novo->proximo = NULL;
 		fila->topo = novo;		
 	}
-}
-
-void imprimirPilha(Pilha *pilha){
-	printf("Pilha: ");
-	printf("\n");
-	No *aux;
-	aux = pilha->topo;
-	int i;
-	while(aux->proximo){
-		printf("Valor: ");
-		for(i = 0; i < 3; i++){
-			printf("%c ", aux->motivo[i]);
-		}
-		printf("\n");
-		aux = aux->proximo;
-	}	
-	printf("Valor: ");
-	for(i = 0; i < 3; i++){
-		printf("%c", aux->motivo[i]);
-	}
-	printf("\n");
-			
 }
 
 void empilhar(Pilha *pilha, char motivo[3]){
@@ -293,23 +233,6 @@ void separaMotivos(Pilha *pilha, Fila *fila, Lista *lista, char *input){
 
 }
 
-int menu(){
-	int op;
-	printf(" =========================================\n");
-	printf("|  1 - Ver resultado final                |\n");
-	printf("|  2 - Ver pilha                          |\n");
-	printf("|  3 - Ver fila                           |\n");
-	printf("|  4 - Ver lista                          |\n");
-	printf("|  5 - Sair                               |\n");
-	printf(" =========================================\n");
-	printf("Opção: ");
-	scanf("%d", &op);
-	while(getchar() != '\n');
-	return op;
-	
-}
-
-
 int main(void) {
     setlocale(LC_ALL, "PORTUGUESE");
 
@@ -318,89 +241,8 @@ int main(void) {
     Lista lista;
     fflush(stdout);
     char *input = entrada();
-    int op;
     separaMotivos(&pilha, &fila, &lista, input);
-	
-	do{
-		op = menu();
-		switch(op){
-			case 1 : {
-				//imprimirResultadoFinal(&fila, &lista);
-				printf("\nMotivos genéticos encontrados:\n");
-    			printf("-----------------------------\n");
-    			printf("Posição\tMotivo\n");
-    			NoF *auxFila = fila.topo;
-    			No *aux = lista.topo;
-    			while (auxFila != NULL) {
-        			printf("%d\t%s\n", auxFila->posicao, aux->motivo);
-        			auxFila = auxFila->proximo;
-        			aux = aux->proximo;
-    			} 	
-				break;
-			}
-			case 2 : {
-				//imprimirPilha(&pilha); 
-				printf("Pilha: ");
-				printf("\n");
-				No *aux;
-				aux = pilha.topo;
-				int i;
-				while(aux->proximo){
-					printf("Valor: ");
-					for(i = 0; i < 3; i++){
-						printf("%c ", aux->motivo[i]);
-					}
-					printf("\n");
-					aux = aux->proximo;
-				}	
-				printf("Valor: ");
-				for(i = 0; i < 3; i++){
-					printf("%c", aux->motivo[i]);
-				}
-				printf("\n");
-				break;
-			}
-			case 3 : {
-				//imprimirFila(&fila); 	
-				printf("\nFila: ");
-				printf("\n");
-				NoF *aux = fila.topo;
-	
-				while(aux->proximo){
-					printf("Valor: ");
-					printf("%d", aux->posicao);
-					aux = aux->proximo;
-					printf("\n");
-				}
-				printf("Valor: ");
-				printf("%d\n", aux->posicao);
-				break;
-			}
-			case 4 : {
-				//imprimirLista(&lista);
-				printf("\nLista: ");
-				printf("\n");
-				No *aux;
-				aux = lista.topo;
-				int i;
-				if(aux != NULL){
-					while(aux->proximo){
-						printf("Valor: ");
-						for(i = 0; i < 3; i++){
-							printf("%c ", aux->motivo[i]);
-						}
-						aux = aux->proximo;	
-					}
-					printf("Valor: ");
-					for(i = 0; i < 3; i++){
-						printf("%c", aux->motivo[i]);
-					}
-					printf("\n");
-				} 	
-				break;
-			}
-		}	
-		system("cls");	
-	}while(op < 5);
+	imprimirResultadoFinal(&fila, &lista);	
+	return -1;
 }
 
