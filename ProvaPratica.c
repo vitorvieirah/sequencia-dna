@@ -26,6 +26,7 @@ typedef struct{
 	No *topo;	
 }Lista;
 
+
 void imprimirLista(Lista *lista){
 	printf("\nLista: ");
 	printf("\n");
@@ -129,6 +130,28 @@ void empilhar(Pilha *pilha, char motivo[3]){
 		novo->proximo = aux;
 		pilha->topo = novo;
 	}	
+}
+
+void imprimirResultadoFinal(Fila *fila, Lista *lista, Pilha *pilha){
+	imprimirPilha(pilha);
+	imprimirFila(fila);
+	printf("oi0\");
+	imprimirLista(lista);
+	printf("OI1\n");
+	printf("\nMotivos genéticos encontrados:\n");
+    printf("-----------------------------\n");
+    printf("Posição\tMotivo\n");
+	printf("OI2\n");
+    NoF *auxFila = fila->topo;
+    No *aux = lista->topo;
+    printf("OI3\n");
+    while (auxFila != NULL) {
+    	printf("OI4\n");
+        printf("%d\t%s\n", auxFila->posicao, aux->motivo);
+        auxFila = auxFila->proximo;
+        aux = aux->proximo;
+    }
+
 }
 
 //Metedo que valida o vetor booleano, procurando um valor true, ou seja, caso
@@ -271,32 +294,16 @@ void separaMotivos(Pilha *pilha, Fila *fila, Lista *lista, char *input){
 }
 
 
-int main (void){
-	setlocale(LC_ALL, "PORTUGUESE");
-	
-	Pilha pilha;
-	Fila fila;
-	Lista lista;
-	fflush(stdout);
-	char *input = entrada(); 
-	separaMotivos(&pilha, &fila, &lista, input);
-	imprimirPilha(&pilha);
-	imprimirFila(&fila);
-	imprimirLista(&lista);
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	return -1;
+int main(void) {
+    setlocale(LC_ALL, "PORTUGUESE");
+
+    Pilha pilha;
+    Fila fila;
+    Lista lista;
+    fflush(stdout);
+    char *input = entrada(); 
+    separaMotivos(&pilha, &fila, &lista, input);
+    imprimirResultadoFinal(&fila, &lista, &pilha);
+    return 0;
 }
+
