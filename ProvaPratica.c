@@ -33,17 +33,19 @@ void imprimirLista(Lista *lista){
 	No *aux;
 	aux = lista->topo;
 	int i;
-	while(aux->proximo){
+	if(aux != NULL){
+		while(aux->proximo){
+			printf("Valor: ");
+			for(i = 0; i < 3; i++){
+				printf("%c ", aux->motivo[i]);
+			}
+			aux = aux->proximo;	
+		}
 		printf("Valor: ");
 		for(i = 0; i < 3; i++){
-			printf("%c ", aux->motivo[i]);
+			printf("%c", aux->motivo[i]);
 		}
 		printf("\n");
-		aux = aux->proximo;
-	}	
-	printf("Valor: ");
-	for(i = 0; i < 3; i++){
-		printf("%c", aux->motivo[i]);
 	}		
 }
 
@@ -76,7 +78,7 @@ void imprimirFila(Fila *fila){
 		printf("\n");
 	}
 	printf("Valor: ");
-	printf("%d", aux->posicao);
+	printf("%d\n", aux->posicao);
 }
 
 void enfileirar(Fila *fila, int posicao){
@@ -85,7 +87,7 @@ void enfileirar(Fila *fila, int posicao){
 	novo->posicao = posicao;
 	
 	if(fila){
-		No *aux = fila->topo;
+		NoF *aux = fila->topo;
 		novo->proximo = aux;
 		fila->topo = novo;		
 	}else{
@@ -111,10 +113,11 @@ void imprimirPilha(Pilha *pilha){
 	printf("Valor: ");
 	for(i = 0; i < 3; i++){
 		printf("%c", aux->motivo[i]);
-	}		
+	}
+	printf("\n");
+			
 }
 
-//Este metodo empilha a pilha
 void empilhar(Pilha *pilha, char motivo[3]){
 	No *novo = (No*) malloc (sizeof(No));
 	int i;
@@ -132,26 +135,18 @@ void empilhar(Pilha *pilha, char motivo[3]){
 	}	
 }
 
-void imprimirResultadoFinal(Fila *fila, Lista *lista, Pilha *pilha){
-	imprimirPilha(pilha);
-	imprimirFila(fila);
-	printf("oi0\");
-	imprimirLista(lista);
-	printf("OI1\n");
+void imprimirResultadoFinal(Fila *fila, Lista *lista){
 	printf("\nMotivos genéticos encontrados:\n");
     printf("-----------------------------\n");
     printf("Posição\tMotivo\n");
-	printf("OI2\n");
     NoF *auxFila = fila->topo;
     No *aux = lista->topo;
-    printf("OI3\n");
     while (auxFila != NULL) {
-    	printf("OI4\n");
         printf("%d\t%s\n", auxFila->posicao, aux->motivo);
         auxFila = auxFila->proximo;
         aux = aux->proximo;
     }
-
+    //        return 0;	
 }
 
 //Metedo que valida o vetor booleano, procurando um valor true, ou seja, caso
@@ -236,17 +231,22 @@ bool validaMotivo(char input[3]){
 char* entrada(){
 	
 	char *result;
+	int i;
 	
 	result = (char*)malloc(256 * sizeof(char));
 	
 	printf("Digite a sequência: ");
 	
+	fgets(result, 256, stdin);
 	
-	gets(result);
+	for(i = 0; result[i] != '\0'; i++)
+		result[i] = toupper(result[i]);
 	
 	return result;
 }
 
+//Metodo responsável por validar se o cojunto de três caracteres tem algum vazio ('\0')
+//caso tenha ele retorna true, caso contrário retorna false.
 bool validaVetorVazio(char input[3]){
 	int i;
 	for(i = 0; i < 3; i++){
@@ -273,9 +273,9 @@ void separaMotivos(Pilha *pilha, Fila *fila, Lista *lista, char *input){
             i = i + 3;
         }
 
-        for (j = 0; j < 3; j++) { 
+        for (j = 0; j < 3; j++)
             motivo[j] = *(input + i + j);
-        }
+        
         vetVazio = validaVetorVazio(motivo);
 
         if (!vetVazio) {
@@ -293,6 +293,22 @@ void separaMotivos(Pilha *pilha, Fila *fila, Lista *lista, char *input){
 
 }
 
+int menu(){
+	int op;
+	printf(" =========================================\n");
+	printf("|  1 - Ver resultado final                |\n");
+	printf("|  2 - Ver pilha                          |\n");
+	printf("|  3 - Ver fila                           |\n");
+	printf("|  4 - Ver lista                          |\n");
+	printf("|  5 - Sair                               |\n");
+	printf(" =========================================\n");
+	printf("Opção: ");
+	scanf("%d", &op);
+	while(getchar() != '\n');
+	return op;
+	
+}
+
 
 int main(void) {
     setlocale(LC_ALL, "PORTUGUESE");
@@ -301,9 +317,90 @@ int main(void) {
     Fila fila;
     Lista lista;
     fflush(stdout);
-    char *input = entrada(); 
+    char *input = entrada();
+    int op;
     separaMotivos(&pilha, &fila, &lista, input);
-    imprimirResultadoFinal(&fila, &lista, &pilha);
-    return 0;
+	
+	do{
+		op = menu();
+		switch(op){
+			case 1 : {
+				//imprimirResultadoFinal(&fila, &lista);
+				printf("\nMotivos genéticos encontrados:\n");
+    			printf("-----------------------------\n");
+    			printf("Posição\tMotivo\n");
+    			NoF *auxFila = fila.topo;
+    			No *aux = lista.topo;
+    			while (auxFila != NULL) {
+        			printf("%d\t%s\n", auxFila->posicao, aux->motivo);
+        			auxFila = auxFila->proximo;
+        			aux = aux->proximo;
+    			} 	
+				break;
+			}
+			case 2 : {
+				//imprimirPilha(&pilha); 
+				printf("Pilha: ");
+				printf("\n");
+				No *aux;
+				aux = pilha.topo;
+				int i;
+				while(aux->proximo){
+					printf("Valor: ");
+					for(i = 0; i < 3; i++){
+						printf("%c ", aux->motivo[i]);
+					}
+					printf("\n");
+					aux = aux->proximo;
+				}	
+				printf("Valor: ");
+				for(i = 0; i < 3; i++){
+					printf("%c", aux->motivo[i]);
+				}
+				printf("\n");
+				break;
+			}
+			case 3 : {
+				//imprimirFila(&fila); 	
+				printf("\nFila: ");
+				printf("\n");
+				NoF *aux = fila.topo;
+	
+				while(aux->proximo){
+					printf("Valor: ");
+					printf("%d", aux->posicao);
+					aux = aux->proximo;
+					printf("\n");
+				}
+				printf("Valor: ");
+				printf("%d\n", aux->posicao);
+				break;
+			}
+			case 4 : {
+				//imprimirLista(&lista);
+				printf("\nLista: ");
+				printf("\n");
+				No *aux;
+				aux = lista.topo;
+				int i;
+				if(aux != NULL){
+					while(aux->proximo){
+						printf("Valor: ");
+						for(i = 0; i < 3; i++){
+							printf("%c ", aux->motivo[i]);
+						}
+						aux = aux->proximo;	
+					}
+					printf("Valor: ");
+					for(i = 0; i < 3; i++){
+						printf("%c", aux->motivo[i]);
+					}
+					printf("\n");
+				} 	
+				break;
+			}
+		}	
+		system("cls");	
+	}while(op < 5);
 }
 
