@@ -18,7 +18,7 @@ Neste trabalho, devido a grande quantidade de motivos génicos, foi permitido es
 - UCU | Serina
 #
 
-# 🙎‍♂️ COLABORADORES
+# 🧑🏻 COLABORADORES
 
 - <a href="https://www.linkedin.com/in/vitor-hugo-vieira-de-lima/">Vitor Hugo Vieira</a>
 - <a href="https://www.linkedin.com/in/heitor-gomes-hrecek-372242272/?originalSubdomain=br">Heitor Gomes Hrecek</a>
